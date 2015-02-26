@@ -17,7 +17,7 @@ AssetConversionService =
       r = request.post Request.mergeOptions({
         url: SERVER_URL + 'convert'
         headers:
-          Accepts: 'application/json'
+          Accept: 'application/json'
         jar: true
       }), (err, httpResponse, body) ->
         if err
