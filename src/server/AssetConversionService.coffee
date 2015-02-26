@@ -16,8 +16,8 @@ AssetConversionService =
     Promises.runSync (done) ->
       r = request.post Request.mergeOptions({
         url: SERVER_URL + 'convert'
-        headers:
-          Accept: 'application/json'
+        # Adding headers causes issues with Jersey.
+        headers: null
         jar: true
       }), (err, httpResponse, body) ->
         if err

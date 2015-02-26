@@ -12,8 +12,8 @@ Assets =
     @fromBuffer(buffer, args)
 
   fromBuffer: (buffer, args) ->
-    c3mls = AssetConversionService.convert(buffer, args)
-    {c3mls: c3mls}
+    result = AssetConversionService.convert(buffer, args)
+    {c3mls: result.c3mls}
 
 Meteor.methods
 
