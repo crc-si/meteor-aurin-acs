@@ -2,8 +2,8 @@ Assets =
 
   fromFile: (fileId, args) ->
     df = Q.defer()
-    Meteor.call 'assets/import/file', fileId, (err, result) =>
-      @_fromUploadResult(err, result, args).then(df.reject, df.resolve)
+    Meteor.call 'assets/from/file', fileId, (err, result) =>
+      @_fromUploadResult(err, result, args).then(df.resolve, df.reject)
     df.promise
 
   fromBlob: (blob, args) ->
