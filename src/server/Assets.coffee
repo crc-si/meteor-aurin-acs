@@ -30,39 +30,44 @@ HTTP.methods
     post: (requestData) ->
       headers = @requestHeaders
       @addHeader('Content-Type', 'application/json')
-      data = Promises.runSync (done) ->
+      result = Promises.runSync (done) ->
         stream = Meteor.npmRequire('stream')
+        formResult = null
         formidable = Meteor.npmRequire('formidable')
         IncomingForm = formidable.IncomingForm
+        # Override to prevent storing any files and read the buffer data directly.
+        origHandlePart = IncomingForm.prototype.handlePart
         IncomingForm.prototype.handlePart = (part) ->
           filename = part.filename
-          # Ignore fields and only handle files.
           unless filename
+            # Ensure non-file fields are also included.
+            origHandlePart.apply(@, arguments)
             return
           bufs = []
-          # TODO(aramk) Use utility method for this.
           part.on 'data', (chunk) ->
             bufs.push(chunk)
           part.on 'end', ->
             buffer = Buffer.concat(bufs)
-            done(null, {
-              buffer: buffer,
+            formResult =
+              buffer: buffer
               mime: part.mime
               filename: filename
-            })
         form = new IncomingForm()
         reader = new stream.Readable()
         # Prevent "not implemented" errors.
         reader._read = ->
         reader.headers = headers
-        form.parse reader, (err, fields, files) -> done(err, null) if err
+        form.parse reader, (err, fields, files) ->
+          _.extend(formResult, fields)
+          if err then done(err, null) else done(null, formResult)
         reader.push(requestData)
         reader.push(null)
-      buffer = data.buffer
+      buffer = result.buffer
       asset = Assets.fromBuffer(buffer, {
-        filename: data.filename
-        contentType: data.mime,
+        filename: result.filename
+        contentType: result.mime,
         knownLength: buffer.length
+        merge: result.merge
       })
       JSON.stringify(asset)
 

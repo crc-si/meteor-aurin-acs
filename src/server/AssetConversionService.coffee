@@ -31,3 +31,6 @@ AssetConversionService =
           done(e, null)
       form = r.form()
       form.append('file', buffer, args)
+      merge = args.merge
+      if merge
+        form.append('merge', merge)
