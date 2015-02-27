@@ -6,7 +6,7 @@ GeometryImportFields =
     unless file
       throw new Error('No file selected for uploading')
     mimeType = file.type
-    format = _.find Assets.formats, (format) -> format.mimeType == mimeType
+    format = _.find AssetUtils.formats, (format) -> format.mimeType == mimeType
     unless format
       throw new Error('Format not recognised for mime-type: ' + file.type)
     formatId = format.id
@@ -35,7 +35,7 @@ GeometryImportFields =
     console.debug 'uploaded', fileObj
     df = Q.defer()
     fileId = fileObj._id
-    Assets.fromFile(fileId, {format: format}).then(
+    AssetUtils.fromFile(fileId, {format: format}).then(
       (result) =>
         c3mls = result.c3mls
         isPolygon = (c3ml) -> AtlasConverter.sanitizeType(c3ml.type) == 'polygon'

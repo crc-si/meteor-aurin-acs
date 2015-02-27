@@ -1,4 +1,4 @@
-AssetsUtils =
+AssetUtils =
 
   fromFile: (fileId, args) ->
     buffer = FileUtils.getBuffer(fileId)
@@ -17,7 +17,7 @@ AssetsUtils =
 
 Meteor.methods
 
-  'assets/from/file': Assets.fromFile.bind(Assets)
+  'assets/from/file': AssetUtils.fromFile.bind(AssetUtils)
 
 # HTTP SERVER
 
@@ -63,29 +63,10 @@ HTTP.methods
         reader.push(requestData)
         reader.push(null)
       buffer = result.buffer
-      asset = Assets.fromBuffer(buffer, {
+      asset = AssetUtils.fromBuffer(buffer, {
         filename: result.filename
         contentType: result.mime,
         knownLength: buffer.length
         merge: result.merge
       })
       JSON.stringify(asset)
-
-  # '/assets/download/:id':
-  #   get: (requestData) ->
-  #     id = this.params.id
-  #     Catalyst.auth.login()
-  #     asset = Catalyst.assets.get(id)
-  #     unless asset
-  #       throw new Meteor.Error(404, 'Asset with ID ' + id + ' not found')
-  #     @addHeader('Content-Type', asset.mimeType)
-  #     @addHeader('Content-Disposition', 'attachment; filename="' + asset.fileName + '.' +
-  #         asset.format + '"; size="' + asset.fileSize + '"')
-  #     buffer = Catalyst.assets.downloadBuffer(id)
-  #     stream = Meteor.npmRequire('stream')
-  #     reader = new stream.Readable()
-  #     reader._read = ->
-  #     res = @createWriteStream()
-  #     reader.pipe(res)
-  #     reader.push(buffer)
-  #     reader.push(null)
