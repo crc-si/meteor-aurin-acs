@@ -1,7 +1,11 @@
 GeometryImportFields =
 
-  importFieldHandler: (e, template, acceptedFormats) ->
-    fileNode = e.target
+  importFieldHandler: (fileNode, template, args) ->
+    args = _.extend({
+      acceptedFormats: Object.keys(AssetUtils.formats)
+      merge: false
+    }, args)
+    acceptedFormats = args.acceptedFormats
     file = fileNode.files[0]
     unless file
       throw new Error('No file selected for uploading')
@@ -12,7 +16,7 @@ GeometryImportFields =
     formatId = format.id
     if _.indexOf(acceptedFormats, formatId) >= 0
       $submitButton = template.$('.submit.button')
-      $loader = $(e.target).siblings('.ui.dimmer')
+      $loader = $(fileNode).siblings('.ui.dimmer')
       setSubmitButtonDisabled = (disabled) ->
         $submitButton.toggleClass('disabled', disabled)
         $submitButton.prop('disabled', disabled)
@@ -22,20 +26,20 @@ GeometryImportFields =
       onUploadComplete = ->
         $loader.removeClass('active')
         setSubmitButtonDisabled(false)
-
       onUploadStart()
+      _.extend(args, {format: formatId})
       Files.upload(file).then(
-        (fileObj) => @onUpload(fileObj, formatId, e, template).fin(onUploadComplete)
+        (fileObj) => @onUpload(fileObj, template, args).fin(onUploadComplete)
         onUploadComplete
       )
     else
       console.error('File did not match expected format', file, format, acceptedFormats)
 
-  onUpload: (fileObj, format, e, template) ->
+  onUpload: (fileObj, template, args) ->
     console.debug 'uploaded', fileObj
     df = Q.defer()
     fileId = fileObj._id
-    AssetUtils.fromFile(fileId, {format: format}).then(
+    AssetUtils.fromFile(fileId, args).then(
       (result) =>
         c3mls = result.c3mls
         isPolygon = (c3ml) -> AtlasConverter.sanitizeType(c3ml.type) == 'polygon'

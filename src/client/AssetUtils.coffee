@@ -2,14 +2,18 @@ AssetUtils =
 
   fromFile: (fileId, args) ->
     df = Q.defer()
-    Meteor.call 'assets/from/file', fileId, (err, result) =>
+    Meteor.call 'assets/from/file', fileId, args, (err, result) =>
       @_fromUploadResult(err, result, args).then(df.resolve, df.reject)
     df.promise
 
   fromBlob: (blob, args) ->
+    args = _.extend({
+      merge: false
+    }, args)
     df = Q.defer()
     formData = new FormData()
-    formData.append('fieldName', blob, args.filename)
+    formData.append('file', blob, args.filename)
+    formData.append('merge', args.merge)
     xhr = new XMLHttpRequest()
     # Need to bind since we need to retain original context in XHR callbacks to obtain response.
     fromUploadResult = @_fromUploadResult.bind(@)

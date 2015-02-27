@@ -13,6 +13,7 @@ request = Meteor.npmRequire('request')
 AssetConversionService =
 
   convert: (buffer, args) ->
+    args ?= {}
     Promises.runSync (done) ->
       r = request.post Request.mergeOptions({
         url: SERVER_URL + 'convert'
@@ -30,7 +31,8 @@ AssetConversionService =
           console.log('Error when parsing asset upload. Content was not JSON:', body)
           done(e, null)
       form = r.form()
-      form.append('file', buffer, args)
+      # Accepts "filename" in args.
+      form.append('file', buffer, {filename: args.filename})
       merge = args.merge
       if merge
-        form.append('merge', merge)
+        form.append('merge', 'true')
