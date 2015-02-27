@@ -18,21 +18,21 @@ Package.on_use(function(api) {
     'cfs:http-methods@0.0.27'
   ], 'server');
   api.addFiles([
-    'src/client/Assets.coffee',
+    'src/client/AssetUtils.coffee',
     'src/client/GeometryImportFields.coffee'
   ], 'client');
   api.addFiles([
     'src/server/AssetConversionService.coffee',
-    'src/server/Assets.coffee',
+    'src/server/AssetUtils.coffee',
     'src/server/Request.coffee'
   ], 'server');
   api.export([
-    'Assets',
+    'AssetUtils',
     'GeometryImportFields'
   ], 'client');
   api.export([
     'AssetConversionService',
-    'Assets',
+    'AssetUtils',
     'Request'
   ], 'server');
 });

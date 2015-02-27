@@ -1,4 +1,4 @@
-Assets =
+AssetsUtils =
 
   fromFile: (fileId, args) ->
     buffer = FileUtils.getBuffer(fileId)

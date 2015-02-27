@@ -1,4 +1,4 @@
-Assets =
+AssetUtils =
 
   fromFile: (fileId, args) ->
     df = Q.defer()
