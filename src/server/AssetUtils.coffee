@@ -63,10 +63,10 @@ HTTP.methods
         reader.push(requestData)
         reader.push(null)
       buffer = result.buffer
-      asset = AssetUtils.fromBuffer(buffer, {
+      args =
         filename: result.filename
         contentType: result.mime,
         knownLength: buffer.length
         merge: result.merge
-      })
+      asset = AssetUtils.fromBuffer(buffer, args)
       JSON.stringify(asset)

@@ -12,8 +12,11 @@ AssetUtils =
     }, args)
     df = Q.defer()
     formData = new FormData()
-    formData.append('file', blob, args.filename)
-    formData.append('merge', args.merge)
+    formArgs = Setter.clone(args)
+    formData.append('file', blob, formArgs.filename)
+    delete formArgs.filename
+    _.each formArgs, (value, key) ->
+      formData.append(key, value)
     xhr = new XMLHttpRequest()
     # Need to bind since we need to retain original context in XHR callbacks to obtain response.
     fromUploadResult = @_fromUploadResult.bind(@)
