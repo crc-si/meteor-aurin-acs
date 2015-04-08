@@ -2,7 +2,7 @@ Package.describe({
   name: 'urbanetic:aurin-acs',
   summary: 'Adapter for Asset Conversion Service (ACS).',
   git: 'https://github.com/urbanetic/meteor-aurin-acs.git',
-  version: '0.1.0'
+  version: '0.1.1'
 });
 
 Package.on_use(function(api) {
