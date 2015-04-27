@@ -19,6 +19,8 @@ Meteor.methods
 
   'assets/from/file': AssetUtils.fromFile.bind(AssetUtils)
 
+bindMeteor = Meteor.bindEnvironment.bind(Meteor)
+
 # HTTP SERVER
 
 # Limit buffering size to 100 MB.
@@ -68,5 +70,29 @@ HTTP.methods
         contentType: result.mime,
         knownLength: buffer.length
         merge: result.merge
-      asset = AssetUtils.fromBuffer(buffer, args)
-      JSON.stringify(asset)
+
+      fileUploadPromise = Q.when()
+      if result.storeFile
+        file = new FS.File()
+        file.attachData(buffer, type: result.mime)
+        file.name(result.filename)
+        fileUploadPromise = Files.upload(file)
+      
+      result = Promises.runSync (done) ->
+        fileUploadPromise.then(
+          bindMeteor (fileObj) ->
+            fileId = fileObj && fileObj._id
+            if fileObj
+              Logger.info('Uploaded file for conversion', fileId)
+            try
+              asset = AssetUtils.fromBuffer(buffer, args)
+            catch e
+              asset = {error: e.toString()}
+            if fileId
+              asset.fileId = fileId
+            done(null, asset)
+          (err) -> done(err, null)
+        )
+        # TODO(aramk) Prevent Promises from handling outcome since return isn't working
+        return undefined
+      JSON.stringify(result)
