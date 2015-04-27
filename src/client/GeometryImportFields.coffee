@@ -8,32 +8,32 @@ GeometryImportFields =
     acceptedFormats = args.acceptedFormats
     file = fileNode.files[0]
     unless file
-      throw new Error('No file selected for uploading')
+      alert('No file selected for uploading')
+      retrun
     mimeType = file.type
-    format = _.find AssetUtils.formats, (format) -> format.mimeType == mimeType
-    unless format
-      throw new Error('Format not recognised for mime-type: ' + file.type)
-    formatId = format.id
-    if _.indexOf(acceptedFormats, formatId) >= 0
-      $submitButton = template.$('.submit.button')
-      $loader = $(fileNode).siblings('.ui.dimmer')
-      setSubmitButtonDisabled = (disabled) ->
-        $submitButton.toggleClass('disabled', disabled)
-        $submitButton.prop('disabled', disabled)
-      onUploadStart = ->
-        $loader.addClass('active')
-        setSubmitButtonDisabled(true)
-      onUploadComplete = ->
-        $loader.removeClass('active')
-        setSubmitButtonDisabled(false)
-      onUploadStart()
-      _.extend(args, {format: formatId})
-      Files.upload(file).then(
-        (fileObj) => @onUpload(fileObj, template, args).fin(onUploadComplete)
-        onUploadComplete
-      )
-    else
-      console.error('File did not match expected format', file, format, acceptedFormats)
+    formatId = AssetUtils.getFileFormat(file)
+    unless formatId
+      alert('Format not recognised for file.')
+      return
+    unless _.indexOf(acceptedFormats, formatId) >= 0
+      alert('File of type "' + formatId + '" did not match expected formats: ' + acceptedFormats)
+    $submitButton = template.$('.submit.button')
+    $loader = $(fileNode).siblings('.ui.dimmer')
+    setSubmitButtonDisabled = (disabled) ->
+      $submitButton.toggleClass('disabled', disabled)
+      $submitButton.prop('disabled', disabled)
+    onUploadStart = ->
+      $loader.addClass('active')
+      setSubmitButtonDisabled(true)
+    onUploadComplete = ->
+      $loader.removeClass('active')
+      setSubmitButtonDisabled(false)
+    onUploadStart()
+    _.extend(args, {format: formatId})
+    Files.upload(file).then(
+      (fileObj) => @onUpload(fileObj, template, args).fin(onUploadComplete)
+      onUploadComplete
+    )
 
   onUpload: (fileObj, template, args) ->
     console.debug 'uploaded', fileObj
@@ -48,7 +48,8 @@ GeometryImportFields =
         paramId = if uploadIsPolygon then 'geom_2d' else 'geom_3d'
         uploadNotEmpty = _.some c3mls, (c3ml) -> !isCollection(c3ml)
         unless uploadNotEmpty
-          throw new Error('File must contain at least one c3ml entity other than a collection.')
+          alert('File must contain at least one c3ml entity other than a collection.')
+          return
         filename = fileObj.name()
         $geomInput = $(template.find('[name="parameters.space.' + paramId + '"]'))
         $geomFilenameInput = $(template.find('[name="parameters.space.' + paramId + '_filename"]'))
