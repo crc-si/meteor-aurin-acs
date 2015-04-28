@@ -3,7 +3,11 @@ GeometryImportFields =
   importFieldHandler: (fileNode, template, args) ->
     args = _.extend({
       acceptedFormats: Object.keys(AssetUtils.formats)
-      merge: false
+      merge: false,
+      getGeomInput: (template, paramId) ->
+        $(template.find('[name="parameters.space.' + paramId + '"]'))
+      getFilenameInput: (template, paramId) ->
+        $(template.find('[name="parameters.space.' + paramId + '_filename"]'))
     }, args)
     acceptedFormats = args.acceptedFormats
     file = fileNode.files[0]
@@ -50,8 +54,8 @@ GeometryImportFields =
         unless uploadNotEmpty
           throw new Error('File must contain at least one c3ml entity other than a collection.')
         filename = fileObj.name()
-        $geomInput = $(template.find('[name="parameters.space.' + paramId + '"]'))
-        $geomFilenameInput = $(template.find('[name="parameters.space.' + paramId + '_filename"]'))
+        $geomInput = args.getGeomInput(template, paramId)
+        $geomFilenameInput = args.getFilenameInput(template, paramId)
         # Upload the c3ml as a file.
         doc = {c3mls: c3mls}
         docString = JSON.stringify(doc)
