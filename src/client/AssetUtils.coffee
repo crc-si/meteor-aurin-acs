@@ -39,10 +39,19 @@ AssetUtils =
     if err then df.reject(err) else df.resolve(result)
     df.promise
 
+  hasExtension: (filename, extension) ->
+    extension = extension.replace(/^\./, '')
+    matches = filename.match(/\.([^./]*)$/)
+    return false unless matches
+    matches[1].toLowerCase() == extension.toLowerCase()
+
+  getFileFormat: (file) ->
+    _.find _.keys(@formats), (formatId) => @formats[formatId].isOfType?(file)
+
   formats:
     shp:
-      id: 'shp'
-      mimeType: 'application/zip'
+      isOfType: (file) ->
+        AssetUtils.hasExtension(file.name, 'zip') || file.type.indexOf('zip') >= 0
     kmz:
-      id: 'kmz'
-      mimeType: 'application/vnd.google-earth.kmz'
+      isOfType: (file) ->
+        AssetUtils.hasExtension(file.name, 'kmz') || file.type == 'application/vnd.google-earth.kmz'
