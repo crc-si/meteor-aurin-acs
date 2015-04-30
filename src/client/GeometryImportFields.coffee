@@ -8,6 +8,7 @@ GeometryImportFields =
         $(template.find('[name="parameters.space.' + paramId + '"]'))
       getFilenameInput: (template, paramId) ->
         $(template.find('[name="parameters.space.' + paramId + '_filename"]'))
+      getParamId: -> if uploadIsPolygon then 'geom_2d' else 'geom_3d'
     }, args)
     acceptedFormats = args.acceptedFormats
     file = fileNode.files[0]
@@ -49,7 +50,7 @@ GeometryImportFields =
         isPolygon = (c3ml) -> AtlasConverter.sanitizeType(c3ml.type) == 'polygon'
         isCollection = (c3ml) -> AtlasConverter.sanitizeType(c3ml.type) == 'collection'
         uploadIsPolygon = _.every c3mls, (c3ml) -> isPolygon(c3ml) || isCollection(c3ml)
-        paramId = if uploadIsPolygon then 'geom_2d' else 'geom_3d'
+        paramId = args.getParamId({c3mls: c3mls, uploadIsPolygon: uploadIsPolygon})
         uploadNotEmpty = _.some c3mls, (c3ml) -> !isCollection(c3ml)
         unless uploadNotEmpty
           alert('File must contain at least one c3ml entity other than a collection.')
