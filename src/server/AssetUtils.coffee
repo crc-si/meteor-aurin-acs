@@ -30,6 +30,7 @@ HTTP.methods
 
   '/assets/upload':
     post: (requestData) ->
+      Logger.info('Uploading asset for conversion...')
       headers = @requestHeaders
       @addHeader('Content-Type', 'application/json')
       result = Promises.runSync (done) ->
@@ -64,6 +65,7 @@ HTTP.methods
           if err then done(err, null) else done(null, formResult)
         reader.push(requestData)
         reader.push(null)
+      Logger.info('Uploaded asset for conversion', result)
       buffer = result.buffer
       args =
         filename: result.filename
@@ -73,6 +75,7 @@ HTTP.methods
 
       fileUploadPromise = Q.when()
       if result.storeFile
+        Logger.info('Storing uploaded asset...')
         file = new FS.File()
         file.attachData(buffer, type: result.mime)
         file.name(result.filename)
@@ -82,14 +85,16 @@ HTTP.methods
         fileUploadPromise.then(
           bindMeteor (fileObj) ->
             fileId = fileObj && fileObj._id
-            if fileObj
+            if fileId
               Logger.info('Uploaded file for conversion', fileId)
             try
               asset = AssetUtils.fromBuffer(buffer, args)
             catch e
               asset = {error: e.toString()}
+              Logger.error('Asset creation failed', e)
             if fileId
               asset.fileId = fileId
+            Logger.info('Asset creation successed')
             done(null, asset)
           (err) -> done(err, null)
         )

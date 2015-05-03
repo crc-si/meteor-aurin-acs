@@ -21,6 +21,7 @@ AssetConversionService =
   # @param {Boolean} args.merge - Whether to convert the file into a single GLTF mesh.
   # @returns {Object} The JSON result of the conversion.
   convert: (buffer, args) ->
+    Logger.info('Converting asset with ACS', args)
     args ?= {}
     Promises.runSync (done) ->
       r = request.post Request.mergeOptions({
@@ -30,13 +31,15 @@ AssetConversionService =
         jar: true
       }), (err, httpResponse, body) ->
         if err
+          Logger.error('ACS conversion failed', err)
           done(err, null)
           return
         try
           json = JSON.parse(body)
+          Logger.info('ACS conversion succeeded')
           done(null, json)
         catch e
-          console.log('Error when parsing asset upload. Content was not JSON:', body)
+          Logger.error('Error when parsing asset upload. Content was not JSON:', body)
           done(e, null)
       form = r.form()
       form.append('file', buffer, {filename: args.filename})
@@ -49,6 +52,7 @@ AssetConversionService =
   #     entities.
   # @returns {Buffer} A buffer containing the exported data.
   export: (c3mlData) ->
+    Logger.info('Exporting asset with ACS')
     Request.call
       url: SERVER_URL + 'convert/export'
       method: 'POST'
