@@ -94,7 +94,7 @@ HTTP.methods
               Logger.error('Asset creation failed', e)
             if fileId
               asset.fileId = fileId
-            Logger.info('Asset creation successed')
+            Logger.info('Asset creation succeeded')
             done(null, asset)
           (err) -> done(err, null)
         )

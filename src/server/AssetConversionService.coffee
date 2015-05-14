@@ -36,7 +36,11 @@ AssetConversionService =
           return
         try
           json = JSON.parse(body)
-          Logger.info('ACS conversion succeeded')
+          c3mls = json.c3mls ? []
+          msg = 'ACS conversion succeeded with a ' + body.length + ' byte response size'
+          if c3mls
+            msg += ' with ' + c3mls.length + ' c3mls'
+          Logger.info(msg)
           done(null, json)
         catch e
           Logger.error('Error when parsing asset upload. Content was not JSON:', body)
