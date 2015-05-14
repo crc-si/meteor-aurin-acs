@@ -48,7 +48,7 @@ AssetConversionService =
       form = r.form()
       form.append('file', buffer, {filename: args.filename})
       merge = args.merge
-      if merge == true
+      if merge == true || merge == 'true'
         form.append('merge', 'true')
 
   # @param {Object} c3mlData - A JSON object containing the C3ML data to convert to the supported

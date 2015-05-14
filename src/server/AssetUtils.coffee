@@ -89,13 +89,14 @@ HTTP.methods
               Logger.info('Uploaded file for conversion', fileId)
             try
               asset = AssetUtils.fromBuffer(buffer, args)
+              if fileId
+                asset.fileId = fileId
+              Logger.info('Asset creation succeeded')
+              done(null, asset)
             catch e
               asset = {error: e.toString()}
               Logger.error('Asset creation failed', e)
-            if fileId
-              asset.fileId = fileId
-            Logger.info('Asset creation succeeded')
-            done(null, asset)
+              done(e, null)
           (err) -> done(err, null)
         )
         # TODO(aramk) Prevent Promises from handling outcome since return isn't working
