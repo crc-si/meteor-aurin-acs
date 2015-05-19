@@ -71,7 +71,7 @@ HTTP.methods
         filename: result.filename
         contentType: result.mime,
         knownLength: buffer.length
-        merge: result.merge
+        merge: Booleans.parse(result.merge)
 
       fileUploadPromise = Q.when()
       if result.storeFile
@@ -87,16 +87,20 @@ HTTP.methods
             fileId = fileObj && fileObj._id
             if fileId
               Logger.info('Uploaded file for conversion', fileId)
-            try
-              asset = AssetUtils.fromBuffer(buffer, args)
-              if fileId
-                asset.fileId = fileId
-              Logger.info('Asset creation succeeded')
+            if Booleans.parse(result.convert) == false
+              asset = {fileId: fileId}
               done(null, asset)
-            catch e
-              asset = {error: e.toString()}
-              Logger.error('Asset creation failed', e)
-              done(e, null)
+            else
+              try
+                asset = AssetUtils.fromBuffer(buffer, args)
+                if fileId
+                  asset.fileId = fileId
+                Logger.info('Asset creation succeeded')
+                done(null, asset)
+              catch e
+                asset = {error: e.toString()}
+                Logger.error('Asset creation failed', e)
+                done(e, null)
           (err) -> done(err, null)
         )
         # TODO(aramk) Prevent Promises from handling outcome since return isn't working
