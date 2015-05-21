@@ -1,4 +1,4 @@
-AssetUtils =
+_.extend AssetUtils,
 
   fromFile: (fileId, args) ->
     df = Q.defer()
@@ -39,11 +39,9 @@ AssetUtils =
     if err then df.reject(err) else df.resolve(result)
     df.promise
 
-  hasExtension: (filename, extension) ->
-    extension = extension.replace(/^\./, '')
-    matches = filename.match(/\.([^./]*)$/)
-    return false unless matches
-    matches[1].toLowerCase() == extension.toLowerCase()
+  hasExtension: (filename, query) ->
+    query = query.replace(/^\./, '')
+    @getExtension(filename) == query.toLowerCase()
 
   getFileFormat: (file) ->
     _.find _.keys(@formats), (formatId) => @formats[formatId].isOfType?(file)

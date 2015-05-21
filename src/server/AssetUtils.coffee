@@ -1,4 +1,4 @@
-AssetUtils =
+_.extend AssetUtils,
 
   fromFile: (fileId, args) ->
     buffer = FileUtils.getBuffer(fileId)
