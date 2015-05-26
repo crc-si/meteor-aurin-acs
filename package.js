@@ -18,6 +18,9 @@ Package.on_use(function(api) {
     'cfs:http-methods@0.0.27'
   ], 'server');
   api.addFiles([
+    'src/common/AssetUtils.coffee'
+  ], ['client', 'server']);
+  api.addFiles([
     'src/client/AssetUtils.coffee',
     'src/client/GeometryImportFields.coffee'
   ], 'client');
@@ -26,6 +29,9 @@ Package.on_use(function(api) {
     'src/server/AssetUtils.coffee',
     'src/server/Request.coffee'
   ], 'server');
+  api.export([
+    'AssetUtils',
+  ], ['client', 'server']);
   api.export([
     'AssetUtils',
     'GeometryImportFields'
