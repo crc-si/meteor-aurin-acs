@@ -19,8 +19,6 @@ Meteor.methods
 
   'assets/from/file': AssetUtils.fromFile.bind(AssetUtils)
 
-bindMeteor = Meteor.bindEnvironment.bind(Meteor)
-
 # HTTP SERVER
 
 # Limit buffering size to 100 MB.
@@ -83,7 +81,7 @@ HTTP.methods
       
       result = Promises.runSync (done) ->
         fileUploadPromise.then(
-          bindMeteor (fileObj) ->
+          Meteor.bindEnvironment (fileObj) ->
             fileId = fileObj && fileObj._id
             if fileId
               Logger.info('Uploaded file for conversion', fileId)
