@@ -1,6 +1,6 @@
 AssetUtils =
 
   getExtension: (filename) ->
-    matches = filename.match(/\.([^./]*)$/)
+    matches = filename?.match(/\.([^./]*)$/)
     return null unless matches
     matches[1].toLowerCase()
