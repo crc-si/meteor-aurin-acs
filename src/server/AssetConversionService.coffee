@@ -2,7 +2,7 @@ env = process.env
 useLocalServer = env.ACS_ENV == 'local'
 
 if useLocalServer
-  console.log('Using local ACS server')
+  Logger.info('Using local ACS server')
 
 SERVER_LOCAL_URL = 'http://localhost:8090/'
 SERVER_REMOTE_URL = 'http://acs.urbanetic.net/'
