@@ -1,3 +1,6 @@
+stream = Npm.require('stream')
+formidable = Npm.require('formidable')
+
 _.extend AssetUtils,
 
   fromFile: (fileId, args) ->
@@ -23,7 +26,7 @@ Meteor.methods
 
 # Limit buffering size to 100 MB.
 HTTP.methodsMaxDataLength = 1024 * 1024 * 100
-
+    
 HTTP.methods
 
   '/assets/upload':
@@ -32,9 +35,7 @@ HTTP.methods
       headers = @requestHeaders
       @addHeader('Content-Type', 'application/json')
       result = Promises.runSync (done) ->
-        stream = Meteor.npmRequire('stream')
         formResult = null
-        formidable = Meteor.npmRequire('formidable')
         IncomingForm = formidable.IncomingForm
         # Override to prevent storing any files and read the buffer data directly.
         origHandlePart = IncomingForm.prototype.handlePart

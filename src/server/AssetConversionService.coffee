@@ -8,9 +8,9 @@ SERVER_LOCAL_URL = 'http://localhost:8090/'
 SERVER_REMOTE_URL = 'http://acs.urbanetic.net/'
 SERVER_URL = if useLocalServer then SERVER_LOCAL_URL else SERVER_REMOTE_URL
 
-request = Meteor.npmRequire('request')
+request = Npm.require('request')
 # NOTE: Enable this to log all requests and responses.
-# Meteor.npmRequire('request-debug')(request)
+# Npm.require('request-debug')(request)
 
 AssetConversionService =
 

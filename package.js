@@ -5,13 +5,19 @@ Package.describe({
   version: '0.1.3'
 });
 
+Npm.depends({
+  'request': '2.37.0',
+  'formidable': '1.0.15'
+});
+
 Package.on_use(function(api) {
   api.versionsFrom('METEOR@0.9.0');
   api.use([
     'coffeescript',
     'underscore',
     'aramk:utility@0.6.0',
-    'aramk:file-upload@0.4.0'
+    'aramk:file-upload@0.4.0',
+    'urbanetic:bismuth-utility@0.1.0'
   ], ['client', 'server']);
   api.use([
     'meteorhacks:npm@1.2.2',
@@ -26,8 +32,7 @@ Package.on_use(function(api) {
   ], 'client');
   api.addFiles([
     'src/server/AssetConversionService.coffee',
-    'src/server/AssetUtils.coffee',
-    'src/server/Request.coffee'
+    'src/server/AssetUtils.coffee'
   ], 'server');
   api.export([
     'AssetUtils',
@@ -38,7 +43,6 @@ Package.on_use(function(api) {
   ], 'client');
   api.export([
     'AssetConversionService',
-    'AssetUtils',
-    'Request'
+    'AssetUtils'
   ], 'server');
 });
