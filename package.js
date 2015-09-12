@@ -15,9 +15,9 @@ Package.on_use(function(api) {
   api.use([
     'coffeescript',
     'underscore',
-    'aramk:utility@0.6.0',
     'aramk:file-upload@0.4.0',
-    'urbanetic:bismuth-utility@0.1.0'
+    'urbanetic:bismuth-utility@0.1.0',
+    'urbanetic:utility@1.0.0'
   ], ['client', 'server']);
   api.use([
     'meteorhacks:npm@1.2.2',
