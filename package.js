@@ -2,7 +2,7 @@ Package.describe({
   name: 'urbanetic:aurin-acs',
   summary: 'Adapter for Asset Conversion Service (ACS).',
   git: 'https://github.com/urbanetic/meteor-aurin-acs.git',
-  version: '0.1.3'
+  version: '0.2.0'
 });
 
 Npm.depends({
@@ -16,8 +16,8 @@ Package.on_use(function(api) {
     'coffeescript',
     'underscore',
     'aramk:file-upload@0.4.0',
-    'urbanetic:bismuth-utility@0.1.0',
-    'urbanetic:utility@1.0.0'
+    'urbanetic:bismuth-utility@0.3.0',
+    'urbanetic:utility@1.2.0'
   ], ['client', 'server']);
   api.use([
     'meteorhacks:npm@1.2.2',
