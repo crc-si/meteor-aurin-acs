@@ -20,7 +20,6 @@ Package.on_use(function(api) {
     'urbanetic:utility@1.2.0'
   ], ['client', 'server']);
   api.use([
-    'meteorhacks:npm@1.2.2',
     'cfs:http-methods@0.0.27'
   ], 'server');
   api.addFiles([
