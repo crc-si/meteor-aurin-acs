@@ -29,6 +29,10 @@ HTTP.methodsMaxDataLength = 1024 * 1024 * 100
     
 HTTP.methods
 
+  # Receives asset byte data during an upload and converts it with ACS. If a `storeFile` form field
+  # is passed with value "1", the result is stored in the Files collection and the ID is passed
+  # back. If `convert` has value "0", no conversion takes place. If `merge` has value "1", the
+  # geometry is merged into a single GLTF mesh. The returned result is a JSON object.
   '/assets/upload':
     post: (requestData) ->
       Logger.info('Uploading asset for conversion...')
