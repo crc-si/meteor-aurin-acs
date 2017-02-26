@@ -5,7 +5,7 @@ if useLocalServer
   Logger.info('Using local ACS server')
 
 SERVER_LOCAL_URL = env.ACS_SERVER_LOCAL_URL ? 'http://localhost:8090/'
-SERVER_REMOTE_URL = env.ACS_SERVER_REMOTE_URL ? 'http://acs.urbanetic.net/'
+SERVER_REMOTE_URL = env.ACS_SERVER_REMOTE_URL ? env.ACS_URL ? 'http://acs.urbanetic.net/'
 SERVER_URL = if useLocalServer then SERVER_LOCAL_URL else SERVER_REMOTE_URL
 
 request = Npm.require('request')
@@ -25,7 +25,7 @@ AssetConversionService =
     args ?= {}
     Promises.runSync (done) ->
       r = request.post Request.mergeOptions({
-        url: SERVER_URL + 'convert'
+        url: Paths.join(SERVER_URL, 'convert')
         # Adding headers causes issues with Jersey.
         headers: null
         jar: true
@@ -57,7 +57,7 @@ AssetConversionService =
   export: (c3mlData) ->
     Logger.info('Exporting asset with ACS')
     Request.call
-      url: SERVER_URL + 'convert/export'
+      url: Paths.join(SERVER_URL, 'convert/export')
       method: 'POST'
       body: JSON.stringify(c3mlData)
       # Adding headers causes issues with Jersey.
