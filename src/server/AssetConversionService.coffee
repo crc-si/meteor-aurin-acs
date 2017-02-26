@@ -4,8 +4,8 @@ useLocalServer = env.ACS_ENV == 'local'
 if useLocalServer
   Logger.info('Using local ACS server')
 
-SERVER_LOCAL_URL = 'http://localhost:8090/'
-SERVER_REMOTE_URL = 'http://acs.urbanetic.net/'
+SERVER_LOCAL_URL = env.ACS_SERVER_LOCAL_URL ? 'http://localhost:8090/'
+SERVER_REMOTE_URL = env.ACS_SERVER_REMOTE_URL ? 'http://acs.urbanetic.net/'
 SERVER_URL = if useLocalServer then SERVER_LOCAL_URL else SERVER_REMOTE_URL
 
 request = Npm.require('request')
