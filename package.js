@@ -1,7 +1,7 @@
 Package.describe({
-  name: 'urbanetic:aurin-acs',
+  name: 'crc4si:aurin-acs',
   summary: 'Adapter for Asset Conversion Service (ACS).',
-  git: 'https://github.com/urbanetic/meteor-aurin-acs.git',
+  git: 'https://github.com/crc-si/meteor-aurin-acs.git',
   version: '0.1.3'
 });
 
@@ -16,8 +16,8 @@ Package.on_use(function(api) {
     'coffeescript',
     'underscore',
     'aramk:utility@0.6.0',
-    'aramk:file-upload@0.4.0',
-    'urbanetic:bismuth-utility@0.1.0'
+    'crc4si:file-upload@0.4.0',
+    'crc4si:bismuth-utility@0.1.0'
   ], ['client', 'server']);
   api.use([
     'meteorhacks:npm@1.2.2',
