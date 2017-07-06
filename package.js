@@ -2,7 +2,7 @@ Package.describe({
   name: 'crc4si:aurin-acs',
   summary: 'Adapter for Asset Conversion Service (ACS).',
   git: 'https://github.com/crc-si/meteor-aurin-acs.git',
-  version: '0.1.4'
+  version: '0.1.5'
 });
 
 Npm.depends({
@@ -15,7 +15,7 @@ Package.on_use(function(api) {
   api.use([
     'coffeescript',
     'underscore',
-    'aramk:utility@1.2.3',
+    'urbanetic:utility@1.2.3',
     'crc4si:file-upload@0.4.0',
     'crc4si:bismuth-utility@0.1.0'
   ], ['client', 'server']);
